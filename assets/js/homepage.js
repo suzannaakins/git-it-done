@@ -9,4 +9,4 @@ var getUserRepos = function (user) {
     });
 };
 
-getUserRepos("suzannaakins");
+getUserRepos();
