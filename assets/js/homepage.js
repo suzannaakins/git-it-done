@@ -38,6 +38,11 @@ var formSubmitHandler = function (event) {
 
 //function to display the repos
 var displayRepos = function (repos, searchTerm) {
+    //check if API returned any repos
+    if (repos.length === 0) {
+        repoContainerEl.textContent = "No repositories found.";
+        return;
+    }
     //clear old content
     repoContainerEl.textContent = "";
     //update search term with new username search
