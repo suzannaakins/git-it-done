@@ -5,15 +5,19 @@ var getUserRepos = function (user) {
     //format the github api url
     var apiUrl = "https://api.github.com/users/" + user + "/repos";
     //make a request to the url
-    fetch(apiUrl).then(function (response) {
-        if (response.ok) {
-            response.json().then(function (data) {
-                displayRepos(data, user);
-            });
-        } else {
-            alert("Error: " + response.statusText);
-        }
-    });
+    fetch(apiUrl)
+        .then(function (response) {
+            if (response.ok) {
+                response.json().then(function (data) {
+                    displayRepos(data, user);
+                });
+            } else {
+                alert("Error: " + response.statusText);
+            }
+        })
+        .catch(function (error) {
+            alert("Unable to connect to GitHub");
+        });
 };
 
 var userFormEl = document.querySelector("#user-form");
