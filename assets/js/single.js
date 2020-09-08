@@ -14,7 +14,7 @@ var getRepoIssues = function (repo) {
     });
 };
 
-getRepoIssues("suzannaakins/work-scheduler");
+getRepoIssues("suzannaakins/git-it-done");
 
 var displayIssues = function (issues) {
     //tell user when they search a repo with no open issues
