@@ -1,5 +1,7 @@
 var repoContainerEl = document.querySelector("#repos-container");
 var repoSearchTerm = document.querySelector("#repo-search-term");
+var userFormEl = document.querySelector("#user-form");
+var nameInputEl = document.querySelector("#username");
 
 var getUserRepos = function (user) {
     //format the github api url
@@ -19,9 +21,6 @@ var getUserRepos = function (user) {
             alert("Unable to connect to GitHub");
         });
 };
-
-var userFormEl = document.querySelector("#user-form");
-var nameInputEl = document.querySelector("#username");
 
 //function to capture form input
 var formSubmitHandler = function (event) {
@@ -81,5 +80,18 @@ var displayRepos = function (repos, searchTerm) {
         repoContainerEl.appendChild(repoEl);
     }
 }
+
+var getFeaturedRepos = function (language) {
+    var apiUrl = "https://api.github.com/search/repositories?q=" + language + "+is:featured&sort=help-wanted-issues";
+    fetch(apiUrl).then(function (response) {
+        if (response.ok) {
+            response.json().then(function (data) {
+                displayRepos(data.items, language);
+            });
+        } else {
+            alert("Error: " + response.statusText);
+        }
+    });
+};
 
 userFormEl.addEventListener("submit", formSubmitHandler);
