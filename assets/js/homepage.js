@@ -2,7 +2,26 @@ var repoContainerEl = document.querySelector("#repos-container");
 var repoSearchTerm = document.querySelector("#repo-search-term");
 var userFormEl = document.querySelector("#user-form");
 var nameInputEl = document.querySelector("#username");
+var languageButtonsEl = document.querySelector("#language-buttons");
 
+//function to capture form input
+var formSubmitHandler = function (event) {
+    //prevent browser from sending form's input data to a URL
+    event.preventDefault();
+    //get value from input element
+    var username = nameInputEl.value.trim();
+    //send username to get repos function
+    if (username) {
+        getUserRepos(username);
+        //clear the form
+        nameInputEl.value = "";
+    }
+    else {
+        alert("Please enter a GitHub username");
+    }
+}
+
+//function that retrieves the repos of the username entered
 var getUserRepos = function (user) {
     //format the github api url
     var apiUrl = "https://api.github.com/users/" + user + "/repos";
@@ -21,23 +40,6 @@ var getUserRepos = function (user) {
             alert("Unable to connect to GitHub");
         });
 };
-
-//function to capture form input
-var formSubmitHandler = function (event) {
-    //prevent browser from sending form's input data to a URL
-    event.preventDefault();
-    //get value from input element
-    var username = nameInputEl.value.trim();
-    //send username to get repos function
-    if (username) {
-        getUserRepos(username);
-        //clear the form
-        nameInputEl.value = "";
-    }
-    else {
-        alert("Please enter a GitHub username");
-    }
-}
 
 //function to display the repos
 var displayRepos = function (repos, searchTerm) {
@@ -81,6 +83,17 @@ var displayRepos = function (repos, searchTerm) {
     }
 }
 
+//function to react to language button clicks
+var buttonClickHandler = function (event) {
+    var language = event.target.getAttribute("data-language");
+    if (language) {
+        getFeaturedRepos(language);
+        //clear old content
+        repoContainerEl.textContent = "";
+    }
+}
+
+//function to retrieve featured repos based on button clicked
 var getFeaturedRepos = function (language) {
     var apiUrl = "https://api.github.com/search/repositories?q=" + language + "+is:featured&sort=help-wanted-issues";
     fetch(apiUrl).then(function (response) {
@@ -95,3 +108,4 @@ var getFeaturedRepos = function (language) {
 };
 
 userFormEl.addEventListener("submit", formSubmitHandler);
+languageButtonsEl.addEventListener("click", buttonClickHandler);
